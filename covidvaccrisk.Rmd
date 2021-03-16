@@ -1,0 +1,23 @@
+---
+title: "Covid-19 vaccination risk"
+author: "Lars Kroll, Edgar Steiger"
+date: "16 3 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r gesamt}
+dosen <- 1.77947e6
+fatality <- 73656/2581329
+thrombosis_risk_vacc <- 7/1.6e6
+aktuelle_inzidenz <- 83.7
+rate_new_cases_7days <- aktuelle_inzidenz/100000
+
+paste(round(thrombosis_risk_vacc*dosen), "mgl. Trombosen")
+paste(round(fatality*rate_new_cases_7days*dosen), "Todesfaelle verhindert")
+paste(round(fatality*rate_new_cases_7days*2*dosen), "Todesfaelle verhindert bei doppelter Inzidenz")
+```
+

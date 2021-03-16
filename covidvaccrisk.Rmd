@@ -14,6 +14,20 @@ library(tidyverse)
 library(kableExtra)
 ```
 
+# Risikoabschätzung durch AstraZeneca Impfungen nach Altersgruppen
+
+## Hintergrund 
+
+Am 15.3. wurden die Impfungen mit dem Impfstoff SARS-CoV-2-Impfstoff (AZD1222) von AstraZeneca (AZ) aufgrund des Auftretens von möglichen, aktuell noch unbestätigten Impfschäden ausgesetzt. Dokumentiert wurden laut Paul Ehrlich Institut (PEI) und Medienberichten in Deutschland 7 Fälle von Sinusthrombose, teilweise mit Todesfolge, die in Zusammenhang mit der Impfung aufgetreten sind. Für Impfungen gilt, dass sie einen Eingriff in die körperliche Unversehrtheit darstellen, der einer besonderen Risikoabwägung bedarf. Mit der folgenden Modellrechnung möchten wir einen Beitrag zur Risikoeinschätzung auf Basis der aktuell verfügbaren Informationen leisten.
+
+Dokumentiert sind aktuell 7 Fälle, vereinfacht nehmend nehmen wir konservativ an, dass es sich dabei nur um Fälle mit Todesfolge handelt. verimpft vom Wirkstoff AZ wurden ca. 1.6 Mio. Dosen. Aktuell sind ca. 1.78 Mio. Dosen verfügbar aber noch nicht verimpft. Welches Risiko bestünde nun, wenn diese Dosen verimpft würden und welche Schutzwirkung steht diesem Risiko entgegen? Um diese Frage zu beantworten muss die aktuelle Inzidenz von COVID-19 Erkrankungen und die Risken die durch diese Erkrankung besteht berücksichtigt werden. Bezogen auf die Gesamtbevölkerung liegt die gemeldete 7-Tage-Inzidenz je 100 Tsd. Einw. lt. RKI Stand 16.3. bei 83,7. Jeder Bürger hatte also in den letzten 7 Tagen ein rechnerisches Risiko von 0,000837% an COVID-19 ärztlich dokumentiert zu erkranken. Bezogen auf die dokumentierten Fälle sind bisher 0,028% der Erkrankten verstorben, diese Rate wird auch als case-fatality bezeichnet.
+
+Die Zahl der durch eine Impfung verhinderten Todesfälle ist also umso höher, je häufiger diese Erkrankung ist.
+
+
+## Ergebnisse
+
+
 ```{r altersgruppen}
 dosen <- 1.77947e6
 aktuelle_inzidenz <- 83.7

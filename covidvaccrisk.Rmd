@@ -9,15 +9,27 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r gesamt}
-dosen <- 1.77947e6
-fatality <- 73656/2581329
-thrombosis_risk_vacc <- 7/1.6e6
-aktuelle_inzidenz <- 83.7
-rate_new_cases_7days <- aktuelle_inzidenz/100000
-
-paste(round(thrombosis_risk_vacc*dosen), "mgl. Trombosen")
-paste(round(fatality*rate_new_cases_7days*dosen), "Todesfaelle verhindert")
-paste(round(fatality*rate_new_cases_7days*2*dosen), "Todesfaelle verhindert bei doppelter Inzidenz")
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(kableExtra)
 ```
 
+```{r altersgruppen}
+dosen <- 1.77947e6
+aktuelle_inzidenz <- 83.7
+
+paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
+                    Altersgruppe=c("ohne Differenzierung", "0-59", "60-79", "80+"),
+                    "Todesrate COVID-19"=c(73656/2581329, 2523/1930221,19936/396629,51197/254479),
+                    "angenommenes Thrombose-Risiko"=7/1.6e6,
+                    "7-Tage-Fallrate" = aktuelle_inzidenz/100000)
+
+resultdata <- paramdata %>%
+  mutate("mgl. Thrombosen"=round(`angenommenes Thrombose-Risiko`*Impfdosen),
+         "Todesfaelle verhindert"=round(`Todesrate COVID-19`*`7-Tage-Fallrate`*Impfdosen),
+         "Todesfaelle verhindert bei doppelter Inzidenz"=round(`Todesrate COVID-19`*`7-Tage-Fallrate`*2*Impfdosen))
+
+resultdata %>%
+  kbl() %>%
+  kable_styling()
+```

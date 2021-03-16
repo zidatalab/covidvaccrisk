@@ -32,7 +32,7 @@ paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
                     Altersgruppe=c("ohne Differenzierung", "0-59", "60-79", "80+"),
                     "Todesrate COVID-19"=c(73656/2581329, 2523/1930221,19936/396629,51197/254479),
                     "angenommenes Thrombose-Risiko"=7/1.6e6,
-                    "7-Tage-Fallrate" = aktuelle_inzidenz/100000)
+                    "7-Tage-Fallrate" = c(aktuelle_inzidenz, 98, 53, 55)/100000)
 
 resultdata <- paramdata %>%
   mutate("mgl. Thrombosen"=round(`angenommenes Thrombose-Risiko`*Impfdosen),

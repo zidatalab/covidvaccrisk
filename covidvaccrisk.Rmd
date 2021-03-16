@@ -47,3 +47,10 @@ resultdata %>%
   kbl() %>%
   kable_styling()
 ```
+
+## Fazit
+
+Unter den Bedingungen einer Pandemie kostet nicht nur das Handeln, sondern auch das Nichthandeln potenziell Menschenleben. Nach den dargestellten Ergebnissen überwiegt der dokumentierte Nutzen der Impfungen für alle 
+Menschen im Alter ab 60 Jahren deutlich das mögliche, aktuell diskutierte Risiko durch die Impfungen. Eine 
+generelle Aussetzung der Impfungen mit AZ für alle Altersgruppen kosten also nach den hier durchgeführten 
+Berechnungen mehr Menschenleben als sie retten. Die Berechnungen sind insofern konservativ, als dass sie den Sekundärnutzen der Impfungen, der in einer Verlangsamung der Infektionsdynamik besteht, aber nicht abschließend zu quantifizieren ist, vollständig unberücksichtigt lassen.

@@ -1,7 +1,6 @@
 ---
 title: "Risikoabschätzung durch AstraZeneca-Impfungen nach Altersgruppen"
 author: "Lars Kroll, Edgar Steiger"
-date: "16 3 2021"
 output: html_document
 ---
 
@@ -12,11 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r libraries, include=FALSE}
 library(tidyverse)
 library(kableExtra)
+Stand <- as.Date("2020-03-18")
 ```
+Stand: `r format(Stand, format="%d.%m.%Y")`
 
 ## Hintergrund 
 
-Am 15.3. wurden die Impfungen mit dem SARS-CoV-2-Impfstoff (AZD1222) von AstraZeneca (AZ) aufgrund des Auftretens von möglichen, aktuell noch unbestätigten Impfschäden ausgesetzt. Dokumentiert wurden laut Paul-Ehrlich-Institut (PEI) und Medienberichten in Deutschland 7 Fälle von Sinusvenenthrombose, teilweise mit Todesfolge, die in Zusammenhang mit der Impfung aufgetreten sind. Für Impfungen gilt, dass sie einen Eingriff in die körperliche Unversehrtheit darstellen, der einer besonderen Risikoabwägung bedarf. Mit der folgenden Modellrechnung möchten wir einen Beitrag zur Risikoeinschätzung auf Basis der aktuell verfügbaren Informationen leisten.
+Am 15.3. wurden die Impfungen mit dem SARS-CoV-2-Impfstoff (AZD1222) von AstraZeneca (AZ) aufgrund des Auftretens von möglichen, aktuell noch unbestätigten Impfschäden ausgesetzt. Dokumentiert wurden laut Paul-Ehrlich-Institut (PEI) und Medienberichten in Deutschland 7 Fälle von Sinusvenenthrombose, teilweise mit Todesfolge, die in Zusammenhang mit der Impfung aufgetreten sind. Für Impfungen gilt, dass sie einen Eingriff in die körperliche Unversehrtheit darstellen, der einer besonderen Risikoabwägung bedarf. Mit der folgenden Modellrechnung möchten wir einen Beitrag zur Risikoeinschätzung auf Basis der aktuell verfügbaren Informationen leisten. Die nachfolgendne Analysen haben den Stand `r format(Stand, format="%d.%m.%Y")`.
 
 Dokumentiert sind aktuell 7 Fälle, vereinfacht nehmen wir konservativ an, dass es sich dabei nur um Fälle mit Todesfolge handelt. Verimpft vom Wirkstoff AZ wurden ca. 1,6 Mio. Dosen. Aktuell sind ca. 1,78 Mio. Dosen verfügbar, aber noch nicht verimpft. Welches Risiko bestünde nun, wenn diese Dosen verimpft würden und welche Schutzwirkung steht diesem Risiko entgegen? Um diese Frage zu beantworten, muss die aktuelle Inzidenz von COVID-19-Erkrankungen und das Risiko, das durch diese Erkrankung besteht, berücksichtigt werden. Bezogen auf die Gesamtbevölkerung liegt die gemeldete 7-Tage-Inzidenz (neue Fälle in 7 Tagen je 100 Tsd. Einwohnende) laut RKI (Stand 16.3.) bei 83,7. Jede\*r Bürger\*in hatte also in den letzten 7 Tagen ein rechnerisches Risiko von 0,000837% an COVID-19 ärztlich dokumentiert zu erkranken. Bezogen auf die dokumentierten Fälle sind bisher 0,028% der Erkrankten verstorben, diese Rate wird auch als case-fatality bezeichnet.
 
@@ -26,21 +27,20 @@ Die Zahl der durch eine Impfung verhinderten Todesfälle ist also umso höher, j
 
 ```{r altersgruppen}
 dosen <- 1.77947e6
-aktuelle_inzidenz <- 83.7
-
 paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
                     Altersgruppe=c("ohne Differenzierung", "0-59", "60-79", "80+"),
                     "Todesrate COVID-19"=c(73656/2581329, 2523/1930221,19936/396629,51197/254479),
-                    "angenommenes Sinusvenenthrombose-Risiko"=7/1.6e6,
-                    "7-Tage-Fallrate" = c(aktuelle_inzidenz, 98, 53, 55)/100000)
+                    "angenommenes Sinusvenenthrombose-Risiko"=c(7/1.6e6,7/1.6e6,1/1.6e6,1/1.6e6),
+                    "7-Tage-Fallrate" = c(87, 100, 54, 56)/100000)
 
 resultdata <- paramdata %>%
   mutate("mgl. Sinusvenenthrombosen"=round(`angenommenes Sinusvenenthrombose-Risiko`*Impfdosen),
          "Todesfaelle verhindert"=round(`Todesrate COVID-19`*`7-Tage-Fallrate`*Impfdosen),
          "Todesfaelle verhindert bei doppelter Inzidenz"=round(`Todesrate COVID-19`*`7-Tage-Fallrate`*2*Impfdosen))
 
-resultdata %>%
-  kbl() %>%
+
+resultdata %>% rename("Todesrate \nCOVID-19 Fälle (CFR)"= "Todesrate COVID-19") %>% 
+  kbl(digits = 7,format.args = list(decimal.mark = ',', big.mark = ".", scientific=FALSE)) %>%
   kable_styling()
 write.csv(resultdata,file = "Results.csv")
 ```

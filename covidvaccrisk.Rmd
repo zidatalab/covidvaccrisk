@@ -48,14 +48,17 @@ regstat_ag <- readr::read_csv("regionalstatistik2019_altersgruppen_gesamt.csv") 
          `85-89`=`85 bis unter 90 Jahre`,
          `90-`=`90 Jahre und mehr`) %>%
   select(`0-14`:`90-`) %>%
-  pivot_longer(cols=`0-14`:`90-`, names_to="Altersgruppe", values_to="Einwohnende")
+  pivot_longer(cols=`0-14`:`90-`, names_to="Alter", values_to="Einwohnende")
 
-drg_rates_ag <- readr::read_csv("drg_auswertung_faelle_in_35_Tagen.csv") %>% filter(`ICD-10-4`=="I67.6+I63.6") %>% select(-contains("ICD")) %>% gather(Alter,Rate,3:ncol(.)) %>% 
+drg_data <- readr::read_csv("drg_auswertung_faelle_in_35_Tagen.csv") %>% filter(`ICD-10-4`=="I67.6+I63.6") %>% select(-contains("ICD")) %>% gather(Alter,Rate,3:ncol(.)) %>% select(-gesamt) %>%
     mutate(minage=as.numeric(stringr::str_split_fixed(Alter,"-",2)[,1]),
-           maxage=as.numeric(stringr::str_split_fixed(Alter,"-",2)[,2])) %>% mutate(AG=case_when(
-            minage>=0 & maxage<=59~"0-59",
-            minage>=60 & maxage<=79~"60-79",
-            minage>=80   ~"80+")) %>% filter(Geschlecht=="gesamt") %>% group_by(AG) %>% summarise(Rate=mean(Rate))  %>% arrange(AG) %>% pull(Rate)
+           maxage=as.numeric(stringr::str_split_fixed(Alter,"-",2)[,2])) %>% filter(Geschlecht=="gesamt") %>%
+  left_join(.,regstat_ag,by="Alter")
+
+drg_rates_ag <-drg_data %>% mutate(AG=case_when(
+    minage>=0 & maxage<=59~"0-59",
+    minage>=60 & maxage<=79~"60-79",
+    minage>=80   ~"80+")) %>% filter(Geschlecht=="gesamt") %>% group_by(AG) %>% summarise(Rate=weighted.mean(Rate,Einwohnende))  %>% arrange(AG) %>% pull(Rate)
 drg_rates <- c(readr::read_csv("drg_auswertung_faelle_in_35_Tagen.csv") %>% filter(`ICD-10-4`=="I67.6+I63.6") %>% filter(Geschlecht=="gesamt") %>% pull(gesamt),drg_rates_ag)/1e6
 
 dosen <- 1.77947e6

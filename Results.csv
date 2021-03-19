@@ -1,5 +1,5 @@
-"","Impfdosen","Altersgruppe","Todesrate COVID-19","angenommenes Sinusvenenthrombose-Risiko","7-Tage-Fallrate","mgl. Sinusvenenthrombosen","Todesfaelle verhindert","Todesfaelle verhindert bei doppelter Inzidenz"
-"1",1779470,"ohne Differenzierung",0.0285341388098921,4.375e-06,0.00087,8,44,88
-"2",593157,"0-59",0.0013071042124192,4.375e-06,0.001,3,1,2
-"3",593157,"60-79",0.0502635964591596,6.25e-07,0.00054,0,16,32
-"4",593157,"80+",0.201183594717049,6.25e-07,0.00056,0,67,134
+"","Impfdosen","Altersgruppe","Todesrate COVID-19","Hintergrundrisiko SVT lt. DRG","Beobachtete SVTn","7-Tage-Fallrate","angenommenes SVT-Risiko","mgl. SVTn","Todesfaelle verhindert","Todesfaelle verhindert bei doppelter Inzidenz"
+"1",1779470,"ohne Differenzierung",0.0285341388098921,1.31e-06,8.125e-06,0.00087,6.815e-06,12,44,88
+"2",593157,"0-59",0.0013071042124192,1.36636363636364e-06,8.125e-06,0.001,6.75863636363636e-06,4,1,2
+"3",593157,"60-79",0.0502635964591596,1.3625e-06,8.125e-06,0.00054,6.7625e-06,4,16,32
+"4",593157,"80+",0.201183594717049,1.535e-06,6.25e-07,0.00056,0,0,67,134

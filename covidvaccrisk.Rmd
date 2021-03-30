@@ -61,8 +61,8 @@ drg_rates_ag <-drg_data %>% mutate(AG=case_when(
     minage>=80   ~"80+")) %>% filter(Geschlecht=="gesamt") %>% group_by(AG) %>% summarise(Rate=weighted.mean(Rate,Einwohnende))  %>% arrange(AG) %>% pull(Rate)
 drg_rates <- c(readr::read_csv("drg_auswertung_faelle_in_35_Tagen.csv") %>% filter(`ICD-10-4`=="I67.6+I63.6") %>% filter(Geschlecht=="gesamt") %>% pull(gesamt),drg_rates_ag)/1e6
 
-dosen <- 1.77947e6
-faelle_bekannt <- 13 # lt. https://www.mdr.de/brisant/astrazeneca-thrombose-102.html
+dosen <- 2601609+742
+faelle_bekannt <- 31 # lt. https://www.mdr.de/brisant/astrazeneca-thrombose-102.html
 
 paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
                     Altersgruppe=c("ohne Differenzierung", "0-59", "60-79", "80+"),
@@ -72,7 +72,7 @@ paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
                                            (23135+28345)/(85028+170037)),
                     "Hintergrundrisiko SVT lt. DRG" = drg_rates,
                     "Beobachtete SVTn nach Impfung" = c(faelle_bekannt/1.6e6, (faelle_bekannt-1-0)/1.6e6, 1/1.6e6, 0/1.6e6),
-                    "7-Tage-Fallrate" = c(96, 112, 60, 57)/100000) %>%
+                    "7-Tage-Fallrate" = c(138, 160, 85, 70)/100000) %>%
                     mutate("angenommenes zusätzl. SVT-Risiko"=`Beobachtete SVTn nach Impfung`-`Hintergrundrisiko SVT lt. DRG`,
                            "angenommenes zusätzl. SVT-Risiko"=ifelse(`angenommenes zusätzl. SVT-Risiko`<0,0,`angenommenes zusätzl. SVT-Risiko`))
                     

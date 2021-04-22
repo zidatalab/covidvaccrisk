@@ -1,6 +1,6 @@
 ---
 title: "Risikoabschätzung durch AstraZeneca-Impfungen nach Altersgruppen"
-author: "Lars Kroll, Edgar Steiger"
+author: "Dr. Lars Kroll, Dr. Edgar Steiger, Dr. Dominik von Stillfried"
 output: html_document
 ---
 
@@ -15,17 +15,15 @@ Stand <- as.Date("2020-04-22")
 ```
 Stand: `r format(Stand, format="%d.%m.%Y")`
 
-## Hintergrund 
+Aktuell wird diskutiert, den SARS-CoV-2-Impfstoff AZD1222 bzw. Vaxzevria von AstraZeneca (AZ) wieder breit an die Bevölkerung aller Altersgruppen zu verimpfen. Derzeit sind Impfungen dieses Wirkstoffes nur für Über-60-Jährige empfohlen, da es im Zusammenhang mit der AZ-(Erst-)Impfung zum Auftreten von seltenen Thrombosen kam.
 
-Am 15.3. wurden die Impfungen mit dem SARS-CoV-2-Impfstoff (AZD1222) von AstraZeneca (AZ) aufgrund des Auftretens von möglichen, aktuell noch unbestätigten Impfschäden kurzfristig ausgesetzt. Anschließend wurden Impfungen mit AZ wieder erlaubt, mit der Einschränkung, nur Über-60-Jährigen diesen Impfstoff zu verabreichen.
+Dokumentiert wurden laut Paul-Ehrlich-Institut (PEI) in Deutschland insgesamt 59 Fälle von Hirn-/Sinusthrombose in 12 Fällen mit Todesfolge, die in Zusammenhang mit der Impfung aufgetreten sind (Quellen: https://www.pei.de/DE/service/presse/aktuelles/aktuelles-inhalt.html, Stand: 20.04.2021, abgerufen am 22.04.2021). Für Impfungen gilt, dass sie einen Eingriff in die körperliche Unversehrtheit darstellen, der einer besonderen Risikoabwägung bedarf. Allerdings führt in der pandemischen Gesamtlage auch der Verzicht auf die Impfung zu einem Risiko, an einer COVID-19-Erkrankung zu versterben.
 
-Dokumentiert wurden laut Paul-Ehrlich-Institut (PEI) in Deutschland insgesamt 59 Fälle von Hirn-/Sinusvenenthrombose (SVT), in 12 Fällen mit Todesfolge, die in Zusammenhang mit der Impfung aufgetreten sind (Quellen: https://www.pei.de/DE/service/presse/aktuelles/aktuelles-inhalt.html, Stand: 20.04.2021, abgerufen am 22.04.2021). Für Impfungen gilt, dass sie einen Eingriff in die körperliche Unversehrtheit darstellen, der einer besonderen Risikoabwägung bedarf. Mit der folgenden Modellrechnung möchten wir einen Beitrag zur Risikoeinschätzung auf Basis der aktuell verfügbaren Informationen leisten. Die nachfolgenden Analysen haben den Stand `r format(Stand, format="%d.%m.%Y")`.
+Mit der folgenden Modellrechnung möchten wir einen Beitrag zur Risikoeinschätzung auf Basis der aktuell verfügbaren Informationen leisten. Die nachfolgenden Analysen haben den Stand `r format(Stand, format="%d.%m.%Y")`.
 
-Verimpft vom Wirkstoff AZ wurden bis zum 31.03.2021 ca. 4,2 Mio. Erstimpfungen. Aktuell sind ca. 1,4 Mio. Dosen verfügbar, aber noch nicht verimpft. Welches Risiko bestünde nun, wenn diese Dosen verimpft würden und welche Schutzwirkung steht diesem Risiko entgegen? Um diese Frage zu beantworten, muss die aktuelle Inzidenz von COVID-19-Erkrankungen und das Risiko, das durch diese Erkrankung besteht, berücksichtigt werden. Bezogen auf die Gesamtbevölkerung liegt die gemeldete 7-Tage-Inzidenz (neue Fälle in 7 Tagen je 100 Tsd. Einwohnende) laut RKI (Stand 22.4.) bei 161,1. Jede\*r Bürger\*in hatte also in den letzten 7 Tagen ein rechnerisches Risiko von 0,1611 % an COVID-19 ärztlich dokumentiert zu erkranken. Bezogen auf die dokumentierten Fälle sind bisher 2,5 % der Erkrankten verstorben, diese Rate wird auch als case-fatality bezeichnet.
+Verimpft vom Wirkstoff AZ wurden bis zum 31.03.2021 ca. 4,2 Mio. Erstimpfungen, für die die oben genannten 59 Fälle von Sinusthrombosen (ST) dokumentiert wurden. Welches Risiko bestünde nun, wenn weitere Dosen AZ verimpft würden und welche Schutzwirkung steht diesem Risiko entgegen? Dies ist insbesondere wichtig zu beantworten, da allein im verbleibenden 2. Quartal 2021 noch etwa 12 Mio. Impfdosen von AZ erwartet werden. Um die Frage nach dem Risiko der Impfung zu beantworten, muss die aktuelle Inzidenz von COVID-19-Erkrankungen und das Risiko, das durch diese Erkrankung besteht, berücksichtigt werden. Bezogen auf die Gesamtbevölkerung liegt die gemeldete 7-Tage-Inzidenz (neue Fälle in 7 Tagen je 100 Tsd. Einwohnende) laut RKI (Stand 22.4.) bei 161,1. Jede\*r Bürger\*in hatte also in den letzten 7 Tagen ein rechnerisches Risiko von 0,1611 Prozent an COVID-19 ärztlich dokumentiert zu erkranken. Bezogen auf die dokumentierten Fälle sind bisher 2,5 Prozent der Erkrankten verstorben, diese Rate wird auch als case-fatality bezeichnet. Die Zahl der durch eine Impfung verhinderten Todesfälle ist also umso höher, je häufiger diese Erkrankung ist. 
 
-Die Zahl der durch eine Impfung verhinderten Todesfälle ist also umso höher, je häufiger diese Erkrankung ist. Wir gehen in unserer nachfolgenden Modellierung vereinfachend davon aus, dass durch die Impfungen alle COVID-19-Todesfälle unter Geimpften verhindert werden können. Wir schätzen danach in Abhängigkeit von der Inzidenz und der Zahl der mit den vorhandenen Dosen durchführbaren Impfungen, wie viele Todesfälle verhindert würden. Dies stellt nur eine Schätzung für den aktuellen Zeitpunkt dar unter der Annahme, dass die aktuelle Inzidenz der Inzidenz in den kommenden 7 Tagen entspricht. Zum Vergleich berechnen wir die Zahl der verhinderten Todesfälle auch für eine Inzidenz von 200, da die Fallzahlen aktuell wieder steigen. Diese mit den Impfungen zu verhindernden Todesfälle (= primärer Impfnutzen) stellen wir der potenziellen Zahl von Sinusvenenthrombose-(Todes-)Fällen gegenüber. Hier nehmen wir an, dass in jeder Altersgruppe maximal so viele (Todes-)Fälle durch Sinusvenenthrombosen auftreten können, wie bisher als Anteil der Impfungen dokumentiert sind.
-
-Die dargestellten Ergebnisse berücksichtigen auch Ergebnisse einer Sonderauswertung der DRG-Statistik. Hier wurde altersspezifisch das Risiko einer Sinusvenenthrombose je 1 Mio. Versicherte über einen Zeitraum von 35 Tagen ermittelt. Dieser Zeitraum entspricht der bisherigen Impfdauer mit dem Wirkstoff AZ. Im Ergebnis sind je 1 Mio. Patienten in dieser Altersgruppe ca. 1,3 Sinusvenenthrombose im Untersuchungszeitraum zu erwarten. Dieses Hintergrundrisiko sollte bei der Risikobeurteilung des AZ-Wirkstoffs unberücksichtigt bleiben. Wir haben darum die Hintergrundaktivität von der beobachteten Aktivität abgezogen, um zu einer realistischeren Risikobeurteilung zu gelangen.
+Wir gehen in unserer nachfolgenden Modellierung vereinfachend davon aus, dass durch die Impfungen alle COVID-19-Todesfälle unter Geimpften verhindert werden können. Wir schätzen danach in Abhängigkeit von der Inzidenz und für jeweils 1.000.000 Erstimpfungen, wie viele Todesfälle nach COVID-19-Infektionen innerhalb der nächsten 4 Wochen verhindert würden. Dies stellt nur eine Schätzung für den aktuellen Zeitpunkt dar, unter der Annahme, dass die aktuelle Inzidenz der Inzidenz in den kommenden 28 Tagen entspricht. Die mit den Impfungen zu verhindernden Todesfälle (= primärer Impfnutzen) stellen wir der potenziellen Zahl von ST-(Todes-)Fällen gegenüber. Hier nehmen wir an, dass in jeder Altersgruppe maximal so viele (Todes-)Fälle durch STn auftreten können, wie bisher als Anteil der Impfungen dokumentiert sind. Außerdem gehen wir davon aus, dass die bisher verimpften AZ-Dosen sich im Verhältnis 2:1:1 auf die drei Altersgruppen verteilen, da AZ zunächst nur für Unter-65-Jährige, dann für alle Altersgruppen und schließlich nur über 60-Jährige empfohlen wurde. Genaue Zahlen zur Altersstruktur der AZ-Geimpften liegen leider nicht vor. Die dargestellten Ergebnisse berücksichtigen auch Ergebnisse einer Sonderauswertung der DRG-Statistik 2019. Hier wurde altersspezifisch das Risiko einer ST (ICD10-Schlüsselnummern I67.6 und I67.7+I63.3) je 1 Mio. Versicherte über einen Zeitraum von 28 Tagen ermittelt. Im Ergebnis sind je 1 Mio. Patient\*innen in dieser Altersgruppe min. 1,048 Sinusthrombosen im Untersuchungszeitraum zu erwarten. Für eine realistische Risikobeurteilung des AZ-Wirkstoffs sollte das Hintergrundrisiko von der Gesamtzahl der erwarteten Ereignisse abgezogen werden.
 
 ## Ergebnisse
 
@@ -61,41 +59,44 @@ drg_rates_ag <-drg_data %>% mutate(AG=case_when(
     minage>=0 & maxage<=59~"0-59",
     minage>=60 & maxage<=79~"60-79",
     minage>=80   ~"80+")) %>% filter(Geschlecht=="gesamt") %>% group_by(AG) %>% summarise(Rate=weighted.mean(Rate,Einwohnende))  %>% arrange(AG) %>% pull(Rate)
-drg_rates <- c(readr::read_csv("drg_auswertung_faelle_in_35_Tagen.csv") %>% filter(`ICD-10-4`=="I67.6+I63.6") %>% filter(Geschlecht=="gesamt") %>% pull(gesamt),drg_rates_ag)/1e6
+drg_rates <- c(readr::read_csv("drg_auswertung_faelle_in_35_Tagen.csv") %>% filter(`ICD-10-4`=="I67.6+I63.6") %>% filter(Geschlecht=="gesamt") %>% pull(gesamt),drg_rates_ag)/1e6/35*28
 
-dosen <- 1371026
+dosen <- 1000000
 verimpfte_dosen <-  4243076
 faelle_bekannt <- 59 # lt. PEI s.o.
 todesfaelle_bekannt <- 12
 
-paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
-                    Altersgruppe=c("ohne Differenzierung", "0-59", "60-79", "80+"),
+paramdata <- tibble(Impfdosen=round(c(dosen, dosen, dosen, dosen)),
+                    Altersgruppe=c("gesamt", "0-59", "60-79", "80+"),
                     "Todesrate COVID-19"=c( 80893 / 3217710 ,
                                            (80893-(14846+7752)-(24900+30122)) / (3217710-(239367+241655)-(92407+181673)),
                                            (14846+7752)/(239367+241655),
                                            (24900+30122)/(92407+181673)),
-                    "Hintergrundrisiko SVT lt. DRG" = drg_rates,
-                    "Beobachtete SVTn nach Impfung" = c(faelle_bekannt/verimpfte_dosen, (faelle_bekannt-5-2-0)/(verimpfte_dosen/3), (5+2)/(verimpfte_dosen/3), 0/(verimpfte_dosen/3)),
-                    "7-Tage-Fallrate" = c(161.1, 191, 96, 71)/100000) %>%
-                    mutate("angenommenes zusätzl. SVT-Risiko"=`Beobachtete SVTn nach Impfung`-`Hintergrundrisiko SVT lt. DRG`,
-                           "angenommenes zusätzl. SVT-Risiko"=ifelse(`angenommenes zusätzl. SVT-Risiko`<0,0,`angenommenes zusätzl. SVT-Risiko`))
+                    "Hintergrundrisiko ST lt. DRG-Statistik" = drg_rates,
+                    "Beobachtete STn nach Impfung" = c(faelle_bekannt/verimpfte_dosen, (faelle_bekannt-5-2-0)/(verimpfte_dosen/2), (5+2)/(verimpfte_dosen/4), 0/(verimpfte_dosen/4)),
+                    "7-Tage-Inzidenz" = c(161, 191, 96, 71),
+                    "28-Tage-Fallrate" = 4*`7-Tage-Inzidenz`/100000) %>%
+                    mutate("angenommenes zusätzl. ST-Risiko"=`Beobachtete STn nach Impfung`-`Hintergrundrisiko ST lt. DRG-Statistik`,
+                           "angenommenes zusätzl. ST-Risiko"=ifelse(`angenommenes zusätzl. ST-Risiko`<0,0,`angenommenes zusätzl. ST-Risiko`))
                     
 
 resultdata <- paramdata %>%
-  mutate("mgl. zusätzl. SVTn"=round(`angenommenes zusätzl. SVT-Risiko`*Impfdosen),
-         "mgl. zusätzl. Todesfälle durch SVTn"=round(`angenommenes zusätzl. SVT-Risiko`*Impfdosen*todesfaelle_bekannt/faelle_bekannt),
-         "Todesfaelle verhindert durch Impfung"=round(`Todesrate COVID-19`*`7-Tage-Fallrate`*Impfdosen),
-         "Todesfaelle verhindert bei Inzidenz 200"=round(`Todesrate COVID-19`*200/100000*Impfdosen))
+  mutate("mgl. zusätzl. STn"=round(`angenommenes zusätzl. ST-Risiko`*Impfdosen),
+         "mgl. zusätzl. Todesfälle durch STn"=round(`angenommenes zusätzl. ST-Risiko`*Impfdosen*todesfaelle_bekannt/faelle_bekannt),
+         "Todesfaelle verhindert durch Impfung (28 Tage)"=round(`Todesrate COVID-19`*`28-Tage-Fallrate`*Impfdosen))
 
 
-resultdata %>% rename("Todesrate \nCOVID-19-Fälle (CFR)"= "Todesrate COVID-19") %>% 
-  kbl(digits = 7,format.args = list(decimal.mark = ',', big.mark = ".", scientific=FALSE)) %>%
+resultdata %>% 
+  mutate("Todesrate COVID-19"=paste0(format(round(`Todesrate COVID-19`*100,1), decimal.mark=","), "%"),
+         "Hintergrundrisiko ST lt. DRG-Statistik"=paste0(format(round(`Hintergrundrisiko ST lt. DRG-Statistik`*100,6), decimal.mark=","), "%"),
+         "Beobachtete STn nach Impfung"=paste0(format(round(`Beobachtete STn nach Impfung`*100, 5), decimal.mark=","), "%"),
+         "28-Tage-Fallrate"=paste0(round(100*`28-Tage-Fallrate`, 5), "%"),
+         "angenommenes zusätzl. ST-Risiko"=paste0(format(round(100*`angenommenes zusätzl. ST-Risiko`, 6), decimal.mark=","), "%")) %>% 
+  kbl(digits = 6, format.args = list(decimal.mark = ',', big.mark = ".", scientific=FALSE)) %>%
   kable_styling()
 write.csv(resultdata,file = "Results.csv")
 ```
 
-## Fazit
+Unter den Bedingungen einer Pandemie kostet nicht nur das Handeln, sondern auch das Nichthandeln potenziell Menschenleben. Nach den dargestellten Ergebnissen überwiegt der dokumentierte Nutzen der Impfungen für alle Menschen das mögliche, aktuell diskutierte Risiko durch die Impfungen. Dies gilt insbesondere für Menschen über 60 Jahren. Eine generelle Aussetzung der Impfungen mit AZ für alle Altersgruppen kostet also nach den hier durchgeführten Berechnungen mehr Menschenleben als sie rettet. Die Berechnungen sind insofern konservativ, als dass sie den Sekundärnutzen der Impfungen, der in einer Verlangsamung der Infektionsdynamik besteht, vollständig unberücksichtigt lassen. Weiterhin muss ein individueller Zusatznutzen der Impfung auch bei jüngeren Menschen erwogen werden, wenn ein erhöhtes Infektionsrisiko z.B. in Folge einer regional höheren Inzidenz oder besonderen beruflichen Expositionsrisikos besteht. Darüber hinaus wurde der Wirkmechanismus hinter dem Auftreten der ST nach Impfung identifiziert und ist durch eine medikamentöse Intervention behandelbar (https://gth-online.org/wp-content/uploads/2021/03/GTH_Stellungnahme_AstraZeneca_3_19032021.pdf).
 
-Unter den Bedingungen einer Pandemie kostet nicht nur das Handeln, sondern auch das Nichthandeln potenziell Menschenleben. Nach den dargestellten Ergebnissen überwiegt der dokumentierte Nutzen der Impfungen für alle Menschen im Alter ab 60 Jahren deutlich das mögliche, aktuell diskutierte Risiko durch die Impfungen. Eine generelle Aussetzung der Impfungen mit AZ für alle Altersgruppen kostet also nach den hier durchgeführten Berechnungen mehr Menschenleben als sie rettet. Die Berechnungen sind insofern konservativ, als dass sie den Sekundärnutzen der Impfungen, der in einer Verlangsamung der Infektionsdynamik besteht, vollständig unberücksichtigt lassen. 
-
-Aktuell gibt es zudem Medienberichte dazu, dass der Wirkmechanismus hinter dem SVT-Auftreten nach Impfung identifiziert werden konnte und durch eine medikamentöse Intervention behandelbar ist (https://www.ndr.de/nachrichten/mecklenburg-vorpommern/AstraZeneca-Greifswalder-Forscher-haben-offenbar-Thrombose-Ursache-gefunden-,coronavirus4660.html). 
+Vor diesem Hintergrund ist zu begrüßen, dass die Impfungen mit dem Wirkstoff AstraZeneca für die gesamte Bevölkerung ermöglicht werden.

@@ -75,7 +75,7 @@ paramdata <- tibble(Impfdosen=round(c(dosen, dosen/3, dosen/3, dosen/3)),
                                            (14846+7752)/(239367+241655),
                                            (24900+30122)/(92407+181673)),
                     "Hintergrundrisiko SVT lt. DRG" = drg_rates,
-                    "Beobachtete SVTn nach Impfung" = c(faelle_bekannt/verimpfte_dosen, (faelle_bekannt-5-2-0)/1.6e6, (5+2)/1.6e6, 0/1.6e6),
+                    "Beobachtete SVTn nach Impfung" = c(faelle_bekannt/verimpfte_dosen, (faelle_bekannt-5-2-0)/(verimpfte_dosen/3), (5+2)/(verimpfte_dosen/3), 0/(verimpfte_dosen/3)),
                     "7-Tage-Fallrate" = c(161.1, 191, 96, 71)/100000) %>%
                     mutate("angenommenes zusätzl. SVT-Risiko"=`Beobachtete SVTn nach Impfung`-`Hintergrundrisiko SVT lt. DRG`,
                            "angenommenes zusätzl. SVT-Risiko"=ifelse(`angenommenes zusätzl. SVT-Risiko`<0,0,`angenommenes zusätzl. SVT-Risiko`))
